@@ -1,0 +1,1 @@
+export const serverEndPoint = "http://localhost:5000"
