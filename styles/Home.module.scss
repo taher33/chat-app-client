@@ -1,2 +1,48 @@
+@import "variables.scss";
+
 .container {
+  margin: 0 auto;
+  padding: 0 $padding-phone;
+
+  .leftSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 3rem;
+    h1 {
+      font-size: 2.25rem;
+      line-height: 135.5%;
+      margin-bottom: 2.5rem;
+    }
+    p {
+      line-height: 148%;
+      margin-bottom: 3rem;
+    }
+    button {
+      border: none;
+      font-family: "Sora";
+      font-weight: bold;
+      font-size: 1.5rem;
+      padding: 0.8rem 2rem;
+      background-color: $primary-color;
+      color: #f1f1f1;
+      border-radius: 5rem;
+      display: flex;
+      align-items: center;
+      transition: background-color 0.5s ease;
+      // box-shadow: 2px 7px 27px -8px rgba(0, 0, 0, 0.84);
+      svg {
+        margin-left: 0.5rem;
+      }
+
+      &:hover {
+        cursor: pointer;
+        background-color: #0060a0;
+      }
+    }
+  }
+  .heroImg {
+    display: none;
+  }
 }
