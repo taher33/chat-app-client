@@ -12,7 +12,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   const [value, setValue] = useState({ name: "", room: "" });
   return (
     <AppContext.Provider value={{ value, setValue, socket }}>
-      <NavBar />
       <Component {...pageProps} />
     </AppContext.Provider>
   );

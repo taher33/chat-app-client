@@ -1,0 +1,85 @@
+@import "variables.scss";
+
+.container {
+  margin-top: 4rem;
+  padding: 0 $padding-phone;
+  .leftSection {
+    margin: 0 auto;
+    max-width: max-content;
+    text-align: left;
+
+    img {
+      display: block;
+      width: 199px;
+      height: 59.41px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 32px;
+      font-weight: bold;
+      margin-top: 3rem;
+      margin-bottom: 1rem;
+    }
+    p {
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      font-size: 16px;
+      font-weight: 200;
+
+      span {
+        font-weight: 400;
+        color: #2ca9ff;
+        transition: color 0.3s ease;
+
+        &:hover {
+          cursor: pointer;
+          color: #2286c8;
+          text-decoration: underline;
+        }
+      }
+    }
+
+    form {
+      label {
+        font-size: 13px;
+        font-weight: 400;
+      }
+      svg {
+        position: absolute;
+      }
+
+      input {
+        width: 100%;
+        display: block;
+        margin: 0.8rem 0 1rem;
+        font-size: 16px;
+        padding: 0.4rem 0.7rem;
+        border-radius: 0.5rem;
+        border: #407bff 1.5px solid;
+
+        &:focus {
+          outline: none;
+          border: #174dc3 1.5px solid;
+        }
+      }
+      button {
+        margin-top: 1rem;
+        color: white;
+        background-color: $primary-color;
+        padding: 0.5rem 1rem;
+        border-radius: 0.7rem;
+        width: 100%;
+        font-size: 24px;
+        letter-spacing: 0.1rem;
+        font-weight: 600;
+        border: none;
+        transition: background-color 0.5s ease;
+
+        &:hover {
+          cursor: pointer;
+          background-color: #0060a0;
+        }
+      }
+    }
+  }
+}

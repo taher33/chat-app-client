@@ -91,7 +91,7 @@
       height: 500px;
     }
     .leftSection {
-      margin-top: 3rem;
+      margin-top: 1.5rem;
       display: block;
       text-align: left;
       h1 {
@@ -106,6 +106,7 @@
       }
       button {
         margin-bottom: 0;
+        font-size: 24px;
       }
     }
   }
@@ -125,6 +126,12 @@
     .leftSection {
       h1 {
         font-size: 60px;
+      }
+      p {
+        font-size: 24px;
+      }
+      button {
+        font-size: 26px;
       }
     }
   }

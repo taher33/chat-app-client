@@ -2,6 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FiArrowUpRight } from "react-icons/fi";
+import { NavBar } from "../components/NavBar";
 
 import styles from "../styles/Home.module.scss";
 
@@ -20,6 +21,7 @@ export default function Home() {
         <meta name="description" content="Landing page" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <NavBar />
 
       <div className={styles.leftSection}>
         <h1>Discover, meet new people with Legate now</h1>
