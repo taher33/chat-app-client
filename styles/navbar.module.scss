@@ -2,6 +2,7 @@
 
 .container {
   margin: 0 auto;
+  max-width: $max-container-width;
   padding: 1rem $padding-phone;
   display: flex;
   align-items: center;
@@ -22,5 +23,43 @@
     &:hover {
       cursor: pointer;
     }
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 1rem $padding-tablet;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding: 1rem $padding-laptop;
+    max-width: 1100px;
+
+    .landingPageNav {
+      display: block;
+
+      span {
+        margin-left: 3.5rem;
+        color: #393939;
+
+        &:hover {
+          cursor: pointer;
+          color: black;
+        }
+      }
+    }
+
+    svg {
+      display: none;
+    }
+  }
+}
+
+@media (min-width: 1440px) {
+  .container {
+    padding: 1rem $padding-desktop;
+    max-width: $max-container-width;
   }
 }
