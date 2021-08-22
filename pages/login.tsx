@@ -10,8 +10,8 @@ const signUp: NextPage<Props> = () => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>signup</title>
-        <meta name="description" content="sign up page" />
+        <title>login</title>
+        <meta name="description" content="login page" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

@@ -3,27 +3,42 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { useAppContext } from "../state";
+import { NavBar } from "../components/NavBar";
 import Link from "next/link";
-import styles from "../styles/main.module.scss";
-import { serverEndPoint } from "../constants";
-import { DefaultEventsMap } from "socket.io-client/build/typed-events";
-import { Socket } from "socket.io-client";
+
+import { FiSend } from "react-icons/fi";
+import { VscTriangleDown } from "react-icons/vsc";
+import styles from "../styles/chat.module.scss";
 
 interface Props {}
 
 interface Message {
   content: string;
-  fromMe: Boolean;
+  user: string;
 }
 interface msg {
   name: string;
   msg: string;
 }
-
+const me = "1";
 const Chat: NextPage<Props> = () => {
   const { value, setValue, socket } = useAppContext();
 
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      content: "hey dude",
+      user: "2",
+    },
+    {
+      content: "u there ?",
+      user: "2",
+    },
+    {
+      content:
+        "hey dude hey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dude",
+      user: "1",
+    },
+  ]);
   console.log(messages);
   const {
     register,
@@ -34,10 +49,10 @@ const Chat: NextPage<Props> = () => {
 
   useEffect(() => {
     socket.on("message", (msg: any) => {
-      setMessages((prev) => [...prev, { content: msg, fromMe: false }]);
+      setMessages((prev) => [...prev, { content: msg, user: "1" }]);
     });
     return () => {};
-  }, []);
+  }, [socket]);
 
   const SubmitMessage = (data: Message) => {
     socket.emit("message", { name: "yasser", message: data.content });
@@ -45,24 +60,76 @@ const Chat: NextPage<Props> = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <form onSubmit={handleSubmit(SubmitMessage)}>
-        <label>
-          message:
-          <input type="text" {...register("content")} />
-        </label>
-        <button disabled={!isDirty || !isValid || isSubmitting} type="submit">
-          submit
-        </button>
-      </form>
+    <>
+      <NavBar />
+      <div className={styles.container}>
+        <div className={styles.usersWrapper}>
+          <h2>
+            Chats
+            <VscTriangleDown />
+          </h2>
+          <div className={styles.filters}>
+            <span>new</span>
+            <span>favorites</span>
+            <span>friends</span>
+          </div>
+          <div className={styles.cardsWrapper}>
+            <div className={styles.card}>
+              {
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src="user.jpg" alt="user-img" />
+              }
+              <div className={styles.cardDetails}>
+                <h4>john Doe</h4>
+                <p>hey dude u good ...</p>
+              </div>
+            </div>
+          </div>
+          <div className={styles.breakLine}></div>
+        </div>
+        <div className={styles.chatWrapper}>
+          <h2>john doe</h2>
+          <div className={styles.chat}>
+            <div className={styles.messagesWrapper}>
+              {messages.map((message, index) => {
+                if (message.user === me) {
+                  return (
+                    <div className={styles.messageClient}>
+                      <p>{message.content}</p>
+                    </div>
+                  );
+                } else {
+                  return (
+                    <div className={styles.messageSender}>
+                      {
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src="./user.jpg" alt="user-img" />
+                      }
+                      <p>{message.content}</p>
+                    </div>
+                  );
+                }
+              })}
+            </div>
+            <form>
+              <input type="text" />
+              <button onClick={(e) => e.preventDefault()}>
+                Send <FiSend />
+              </button>
+            </form>
+          </div>
+        </div>
 
-      {messages.map((el, index) => (
-        <h4 key={index}>{el.content}</h4>
-      ))}
-      <Link passHref href="/">
-        <h5>home</h5>
-      </Link>
-    </div>
+        <div className={styles.chatUsers}>
+          {
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src="user.jpg" alt="user-img" />
+          }
+          <h2>john doe</h2>
+          <p>an engenieer at google</p>
+        </div>
+      </div>
+    </>
   );
 };
 
