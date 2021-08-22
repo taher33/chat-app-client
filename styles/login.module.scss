@@ -123,31 +123,32 @@
   .container {
     padding: 0;
     display: grid;
-    grid-template-columns: 47vw 50vw;
+    grid-template-columns: 50vw 50vw;
     .rightSection {
       height: 100vh;
       min-height: max-content;
       background-color: #99edcc;
       display: block;
-      border-radius: 0 3rem 3rem 0;
+      border-radius: 3rem 0 0 3rem;
       .wrapper {
         margin-top: 4rem;
         .logo {
           height: 60.44px;
           width: 217px;
-          float: right;
-          margin-right: 15%;
+          float: left;
+          margin-left: 15%;
           margin-bottom: 3rem;
           margin-top: 1rem;
         }
         .ul {
           display: block;
-          width: 90%;
+          width: 85%;
           margin: 5rem auto;
         }
       }
     }
     .leftSection {
+      margin-top: 7rem;
       img {
         display: none;
       }

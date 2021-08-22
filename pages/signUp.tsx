@@ -16,7 +16,22 @@ const signUp: NextPage<Props> = () => {
         <meta name="description" content="sign up page" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className={styles.rightSection}></div>
+      <div className={styles.rightSection}>
+        <div className={styles.wrapper}>
+          {
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              className={styles.logo}
+              src="./legate-white.png"
+              alt="legate"
+            />
+          }
+          {
+            // eslint-disable-next-line @next/next/no-img-element
+            <img className={styles.ul} src="./signup.png" alt="ullistartion" />
+          }
+        </div>
+      </div>
       <div className={styles.leftSection}>
         {
           // eslint-disable-next-line @next/next/no-img-element
