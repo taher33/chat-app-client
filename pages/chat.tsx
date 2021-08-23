@@ -38,6 +38,51 @@ const Chat: NextPage<Props> = () => {
         "hey dude hey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dude",
       user: "1",
     },
+    {
+      content:
+        "hey dude hey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dude",
+      user: "1",
+    },
+    {
+      content:
+        "hey dude hey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dude",
+      user: "1",
+    },
+    {
+      content:
+        "hey dude hey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dude",
+      user: "1",
+    },
+    {
+      content:
+        "hey dude hey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dude",
+      user: "1",
+    },
+    {
+      content:
+        "hey dude hey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dude",
+      user: "1",
+    },
+    {
+      content:
+        "hey dude hey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dude",
+      user: "1",
+    },
+    {
+      content:
+        "hey dude hey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dude",
+      user: "1",
+    },
+    {
+      content:
+        "hey dude hey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dude",
+      user: "1",
+    },
+    {
+      content:
+        "hey dude hey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dude",
+      user: "1",
+    },
   ]);
   console.log(messages);
   const {
@@ -61,7 +106,6 @@ const Chat: NextPage<Props> = () => {
 
   return (
     <>
-      <NavBar />
       <div className={styles.container}>
         <div className={styles.usersWrapper}>
           <h2>
@@ -84,6 +128,16 @@ const Chat: NextPage<Props> = () => {
                 <p>hey dude u good ...</p>
               </div>
             </div>
+            <div className={styles.card}>
+              {
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src="user.jpg" alt="user-img" />
+              }
+              <div className={styles.cardDetails}>
+                <h4>john Doe</h4>
+                <p>hey dude u good ...</p>
+              </div>
+            </div>
           </div>
           <div className={styles.breakLine}></div>
         </div>
@@ -94,13 +148,16 @@ const Chat: NextPage<Props> = () => {
               {messages.map((message, index) => {
                 if (message.user === me) {
                   return (
-                    <div className={styles.messageClient}>
+                    <div
+                      key={index}
+                      className={`${styles.messageClient} ${styles.red}`}
+                    >
                       <p>{message.content}</p>
                     </div>
                   );
                 } else {
                   return (
-                    <div className={styles.messageSender}>
+                    <div key={index} className={styles.messageSender}>
                       {
                         // eslint-disable-next-line @next/next/no-img-element
                         <img src="./user.jpg" alt="user-img" />
@@ -112,9 +169,9 @@ const Chat: NextPage<Props> = () => {
               })}
             </div>
             <form>
-              <input type="text" />
+              <input placeholder="type your message" type="text" />
               <button onClick={(e) => e.preventDefault()}>
-                Send <FiSend />
+                send <FiSend />
               </button>
             </form>
           </div>

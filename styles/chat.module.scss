@@ -1,7 +1,9 @@
 @import "variables.scss";
 
+$chat-wrapper-height: calc(100vh - 71px);
+
 .container {
-  height: 100vh;
+  margin-top: 4rem;
   padding: 0 $padding-phone;
   display: grid;
   grid-template-rows: max-content 1fr;
@@ -33,6 +35,7 @@
         }
       }
     }
+
     .cardsWrapper {
       display: none;
       .card {
@@ -55,20 +58,26 @@
   }
 
   .chatWrapper {
-    //   height: 100vh;
     h2 {
       font-weight: 500;
       text-transform: capitalize;
     }
     .chat {
+      display: flex;
+      height: 100%;
+      flex-direction: column;
       position: relative;
-
       .messagesWrapper {
-        overflow: scroll;
+        flex: 1 1 auto;
+        // height: -webkit-fill-available;
+        overflow-y: auto;
+        padding-bottom: 1rem;
 
         .messageClient {
           max-width: 80%;
-          float: right;
+          width: fit-content;
+          margin-left: auto;
+          margin-bottom: 0.5rem;
           background-color: $primary-color;
           color: white;
           padding: 0.4rem 0.4rem 0.4rem 0.6rem;
@@ -80,6 +89,7 @@
         }
         .messageSender {
           display: flex;
+
           img {
             height: 35px;
             margin-right: 0.4rem;
@@ -87,6 +97,7 @@
 
           p {
             max-width: 80%;
+
             width: fit-content;
             padding: 0.4rem 0.6rem 0.4rem 0.4rem;
             border-radius: 0 0.8rem 0.8rem 0.4rem;
@@ -96,8 +107,125 @@
       }
 
       form {
-        position: absolute;
+        position: sticky;
         bottom: 0;
+
+        padding: 0.2rem 0 0.2rem;
+
+        display: flex;
+        align-items: center;
+        input {
+          padding: 0.3rem 0.4rem;
+          border: 1px solid #407bff;
+          border-radius: 0.4rem;
+
+          font-family: "Sora";
+          font-size: 16px;
+          display: block;
+          width: 100%;
+
+          &:focus {
+            outline: none;
+          }
+        }
+
+        button {
+          display: flex;
+          align-items: center;
+          font-family: "Sora";
+          font-weight: 600;
+          font-size: 0.9rem;
+          padding: 0.3rem 0.7rem;
+          border-radius: 0.5rem;
+          border: none;
+          color: white;
+          background-color: #0035a7;
+          margin-left: 1rem;
+          svg {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-left: 0.4rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    grid-template-columns: max-content 1fr;
+    // grid-gap: 1rem;
+
+    .usersWrapper {
+      margin-right: 1rem;
+      position: sticky;
+      top: 0;
+      .breakLine {
+        display: none;
+      }
+      svg {
+        display: none;
+      }
+      .filters {
+        display: block;
+      }
+      .cardsWrapper {
+        display: block;
+        margin-top: 1.5rem;
+
+        .card {
+          margin-top: 0.9rem;
+          background-color: #e6e6e6;
+          display: flex;
+          align-items: center;
+          padding: 0.3rem 0.6rem;
+          border-radius: 1rem;
+          img {
+            margin-top: 0;
+            height: 50px;
+            border: 2px solid white;
+          }
+          .cardDetails {
+            display: block;
+            margin-left: 1rem;
+            h4 {
+              margin-top: 0.5rem;
+              margin-bottom: 0;
+              font-weight: 600;
+              // font-size: 13px;
+            }
+            p {
+              // font-size: 13px;
+              margin-top: 0.3rem;
+            }
+          }
+        }
+      }
+    }
+
+    .chatWrapper {
+      .chat {
+        background-color: #f2f2f2;
+        border-radius: 1rem;
+        height: max-content;
+        padding: 1rem 1rem 0rem 1rem;
+
+        .messagesWrapper {
+          height: -webkit-fill-available;
+          font-size: 20px;
+        }
+
+        form {
+          input {
+            padding: 0.6rem 0.3rem;
+            font-size: 18px;
+          }
+          button {
+            padding: 0.567rem 0.9rem;
+            font-size: 20px;
+          }
+        }
       }
     }
   }
