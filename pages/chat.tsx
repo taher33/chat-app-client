@@ -16,10 +16,7 @@ interface Message {
   content: string;
   user: string;
 }
-interface msg {
-  name: string;
-  msg: string;
-}
+
 const me = "1";
 const Chat: NextPage<Props> = () => {
   const { value, setValue, socket } = useAppContext();
@@ -32,51 +29,6 @@ const Chat: NextPage<Props> = () => {
     {
       content: "u there ?",
       user: "2",
-    },
-    {
-      content:
-        "hey dude hey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dude",
-      user: "1",
-    },
-    {
-      content:
-        "hey dude hey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dude",
-      user: "1",
-    },
-    {
-      content:
-        "hey dude hey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dude",
-      user: "1",
-    },
-    {
-      content:
-        "hey dude hey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dude",
-      user: "1",
-    },
-    {
-      content:
-        "hey dude hey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dude",
-      user: "1",
-    },
-    {
-      content:
-        "hey dude hey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dude",
-      user: "1",
-    },
-    {
-      content:
-        "hey dude hey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dude",
-      user: "1",
-    },
-    {
-      content:
-        "hey dude hey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dude",
-      user: "1",
-    },
-    {
-      content:
-        "hey dude hey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dude",
-      user: "1",
     },
     {
       content:

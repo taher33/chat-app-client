@@ -1,14 +1,46 @@
 import { NextPage } from "next";
 import Head from "next/head";
-import React from "react";
+
+import { useAppContext } from "../state";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 
 import { IoPersonOutline } from "react-icons/io5";
-
 import styles from "../styles/signup.module.scss";
+import { useRouter } from "next/router";
 
 interface Props {}
+interface form {
+  userName: string;
+  email: string;
+  password: string;
+}
 
-const signUp: NextPage<Props> = () => {
+interface response {
+  error: string | undefined;
+  user:
+    | {
+        name: string;
+        email: string;
+      }
+    | undefined;
+}
+
+const SignUp: NextPage<Props> = () => {
+  const { user, setUser, socket } = useAppContext();
+  const { register, handleSubmit, reset } = useForm<form>();
+  const router = useRouter();
+  useEffect(() => {
+    if (user?.name) router.push("/chat");
+  }, []);
+
+  const submitForm = (data: form) => {
+    socket.emit("signup", data, (response: response) => {
+      if (response.error) return console.log(response.error);
+      setUser({ name: response.user!.name, email: response.user!.email });
+      console.log(response.user);
+    });
+  };
   return (
     <div className={styles.container}>
       <Head>
@@ -41,22 +73,22 @@ const signUp: NextPage<Props> = () => {
         <p>
           Already have an acount ? <span>Login</span>
         </p>
-        <form>
+        <form onSubmit={handleSubmit(submitForm)}>
           <label>Username</label>
           {/* <IoPersonOutline /> */}
-          <input type="text" name="userName" />
+          <input type="text" {...register("userName")} />
           <label>
             E-mail
-            <input type="email" name="email" />
+            <input type="email" {...register("email")} />
           </label>
           <label>
-            Password <input type="password" name="password" />
+            Password <input type="password" {...register("password")} />
           </label>
-          <button onClick={(e) => e.preventDefault()}>SIGN UP</button>
+          <button>SIGN UP</button>
         </form>
       </div>
     </div>
   );
 };
 
-export default signUp;
+export default SignUp;

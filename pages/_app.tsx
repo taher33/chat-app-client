@@ -4,14 +4,13 @@ import { AppContext } from "../state";
 import { useState } from "react";
 import { serverEndPoint } from "../constants";
 import { io } from "socket.io-client";
-import { NavBar } from "../components/NavBar";
 
 const socket = io(serverEndPoint);
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [value, setValue] = useState({ name: "", room: "" });
+  const [user, setUser] = useState({} as any);
   return (
-    <AppContext.Provider value={{ value, setValue, socket }}>
+    <AppContext.Provider value={{ user, setUser, socket }}>
       <Component {...pageProps} />
     </AppContext.Provider>
   );

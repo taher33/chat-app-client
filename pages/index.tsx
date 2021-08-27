@@ -30,11 +30,11 @@ export default function Home() {
             chat with people around the world with Legate privetly or using
             rooms with ur friends
           </p>
-          {/* <Link passHref href="/signup"> */}
-          <button>
-            Sign up <FiArrowUpRight />
-          </button>
-          {/* </Link> */}
+          <Link passHref href="/signUp">
+            <button>
+              Sign up <FiArrowUpRight />
+            </button>
+          </Link>
         </div>
         {
           // eslint-disable-next-line @next/next/no-img-element
