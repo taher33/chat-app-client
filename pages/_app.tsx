@@ -3,9 +3,17 @@ import type { AppProps } from "next/app";
 import { AppContext } from "../state";
 import { useState } from "react";
 import { serverEndPoint } from "../constants";
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 
-const socket = io(serverEndPoint);
+let socket: Socket;
+
+if (typeof window !== "undefined") {
+  socket = io(serverEndPoint, {
+    auth: {
+      token: localStorage.getItem("jid"),
+    },
+  });
+}
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [user, setUser] = useState({} as any);

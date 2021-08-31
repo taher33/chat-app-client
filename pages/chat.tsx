@@ -14,45 +14,98 @@ interface Props {}
 
 interface Message {
   content: string;
-  user: string;
+  sender: string;
+  reciever: string;
+}
+interface response {
+  error: string | undefined;
+  message: Message | undefined;
 }
 
-const me = "1";
-const Chat: NextPage<Props> = () => {
-  const { value, setValue, socket } = useAppContext();
+interface getMsgResponse {
+  error: string | undefined;
+  message: Message[] | undefined;
+}
+interface ConectedUsers {
+  name: string;
+  id: string;
+  email: string;
+}
 
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      content: "hey dude",
-      user: "2",
-    },
-    {
-      content: "u there ?",
-      user: "2",
-    },
-    {
-      content:
-        "hey dude hey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dudehey dude",
-      user: "1",
-    },
-  ]);
-  console.log(messages);
+const Chat: NextPage<Props> = () => {
+  const { user, socket } = useAppContext();
+
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [conectedUsers, setConectedUsers] = useState<ConectedUsers[]>([]);
+  const [reciever, setReciever] = useState<string>();
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { isDirty, isSubmitting, isValid },
   } = useForm<Message>({ mode: "onChange" });
-
+  console.log(conectedUsers);
+  console.log(reciever);
+  // in case of not logedin user gets access to this page
   useEffect(() => {
-    socket.on("message", (msg: any) => {
-      setMessages((prev) => [...prev, { content: msg, user: "1" }]);
+    socket.on("connect_error", (err) => {
+      console.log("connect error plz login", err);
     });
-    return () => {};
   }, [socket]);
 
-  const SubmitMessage = (data: Message) => {
-    socket.emit("message", { name: "yasser", message: data.content });
+  useEffect(() => {
+    socket.on("user connecting", (users) => {
+      setConectedUsers(users);
+    });
+  }, [socket]);
+  // if I recieve a message
+  // ! check if this works properly
+  useEffect(() => {
+    socket.on("private message", (message) => {
+      setMessages((prev) => {
+        prev.push(message!);
+        return prev;
+      });
+    });
+  }, [socket]);
+
+  // get the active users for now
+  useEffect(() => {
+    socket.on("user connecting", (users) => {
+      setConectedUsers(users);
+    });
+  }, [socket, reciever]);
+
+  //todo: get messages for the selected chat (backend now)
+  const selectUser = (selectedUser: ConectedUsers) => {
+    const payload = {
+      id: selectedUser.id,
+    };
+
+    setReciever(selectedUser.email);
+    socket.emit("get previous messages", payload, (res: getMsgResponse) => {
+      if (res.error) return console.log(res.error);
+      setMessages(() => {
+        const prevMessages = res.message as Message[];
+        return prevMessages;
+      });
+    });
+  };
+  // send the message
+  const SubmitMessage = (data: any) => {
+    const payload = {
+      email: reciever,
+      message: data.content,
+    };
+    socket.emit("private message", payload, (res: response) => {
+      if (res.error) return; //! implement the error for this
+      const message = res.message;
+      setMessages((prev) => {
+        prev.push(message!);
+        return prev;
+      });
+    });
     reset();
   };
 
@@ -70,26 +123,24 @@ const Chat: NextPage<Props> = () => {
             <span>friends</span>
           </div>
           <div className={styles.cardsWrapper}>
-            <div className={styles.card}>
-              {
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src="user.jpg" alt="user-img" />
-              }
-              <div className={styles.cardDetails}>
-                <h4>john Doe</h4>
-                <p>hey dude u good ...</p>
-              </div>
-            </div>
-            <div className={styles.card}>
-              {
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src="user.jpg" alt="user-img" />
-              }
-              <div className={styles.cardDetails}>
-                <h4>john Doe</h4>
-                <p>hey dude u good ...</p>
-              </div>
-            </div>
+            {conectedUsers.map((element) => {
+              return (
+                <div
+                  key={element.id}
+                  onClick={() => selectUser(element)}
+                  className={styles.card}
+                >
+                  {
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src="user.jpg" alt="user-img" />
+                  }
+                  <div className={styles.cardDetails}>
+                    <h4>{element.name}</h4>
+                    <p>hey dude u good ...</p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
           <div className={styles.breakLine}></div>
         </div>
@@ -98,7 +149,7 @@ const Chat: NextPage<Props> = () => {
           <div className={styles.chat}>
             <div className={styles.messagesWrapper}>
               {messages.map((message, index) => {
-                if (message.user === me) {
+                if (message.sender === user!.id) {
                   return (
                     <div
                       key={index}
@@ -120,9 +171,13 @@ const Chat: NextPage<Props> = () => {
                 }
               })}
             </div>
-            <form>
-              <input placeholder="type your message" type="text" />
-              <button onClick={(e) => e.preventDefault()}>
+            <form onSubmit={handleSubmit(SubmitMessage)}>
+              <input
+                placeholder="type your message"
+                type="text"
+                {...register("content")}
+              />
+              <button>
                 send <FiSend />
               </button>
             </form>

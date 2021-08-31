@@ -1,12 +1,44 @@
 import { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
+import { useForm } from "react-hook-form";
+import { useAppContext } from "../state";
 
 import styles from "../styles/login.module.scss";
 
 interface Props {}
 
-const signUp: NextPage<Props> = () => {
+interface Form {
+  email: string;
+  password: string;
+}
+interface response {
+  error: string | undefined;
+  user:
+    | {
+        name: string;
+        email: string;
+        id: string;
+      }
+    | undefined;
+}
+
+const Login: NextPage<Props> = () => {
+  const { user, setUser, socket } = useAppContext();
+  const { register, handleSubmit, reset } = useForm<Form>();
+
+  const submitForm = (data: Form) => {
+    socket.emit("login", data, (response: response) => {
+      if (response.error) return console.log(response.error);
+      setUser({
+        name: response.user!.name,
+        email: response.user!.email,
+        id: response.user!.id,
+      });
+      console.log(response.user);
+    });
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -24,11 +56,11 @@ const signUp: NextPage<Props> = () => {
         <p>
           don’t have an acount ? <span>sign up</span>
         </p>
-        <form>
-          <label>Username</label>
-          <input type="text" name="userName" />
+        <form onSubmit={handleSubmit(submitForm)}>
+          <label>E-mail</label>
+          <input type="text" {...register("email")} />
           <label>
-            Password <input type="password" name="password" />
+            Password <input type="password" {...register("password")} />
           </label>
           <button onClick={(e) => e.preventDefault()}>LOGIN</button>
         </form>
@@ -53,4 +85,4 @@ const signUp: NextPage<Props> = () => {
   );
 };
 
-export default signUp;
+export default Login;

@@ -7,10 +7,11 @@ interface State {
     | {
         name: string;
         email: string;
+        id: string;
       }
     | undefined;
   setUser: Dispatch<
-    SetStateAction<{ name: string; email: string } | undefined>
+    SetStateAction<{ name: string; email: string; id: string } | undefined>
   >;
   socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 }

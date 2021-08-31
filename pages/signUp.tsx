@@ -22,8 +22,11 @@ interface response {
     | {
         name: string;
         email: string;
+        id: string;
       }
     | undefined;
+
+  token: string | undefined;
 }
 
 const SignUp: NextPage<Props> = () => {
@@ -32,12 +35,18 @@ const SignUp: NextPage<Props> = () => {
   const router = useRouter();
   useEffect(() => {
     if (user?.name) router.push("/chat");
-  }, []);
+  }, [router, user?.name]);
 
   const submitForm = (data: form) => {
     socket.emit("signup", data, (response: response) => {
       if (response.error) return console.log(response.error);
-      setUser({ name: response.user!.name, email: response.user!.email });
+      setUser({
+        name: response.user!.name,
+        email: response.user!.email,
+        id: response.user!.id,
+      });
+      let token = response.token as string;
+      localStorage.setItem("jid", token);
       console.log(response.user);
     });
   };
