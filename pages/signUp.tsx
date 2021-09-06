@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { IoPersonOutline } from "react-icons/io5";
 import styles from "../styles/signup.module.scss";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 interface Props {}
 interface form {
@@ -33,6 +34,7 @@ const SignUp: NextPage<Props> = () => {
   const { user, setUser, socket } = useAppContext();
   const { register, handleSubmit, reset } = useForm<form>();
   const router = useRouter();
+
   useEffect(() => {
     if (user?.name) router.push("/chat");
   }, [router, user?.name]);
@@ -47,7 +49,6 @@ const SignUp: NextPage<Props> = () => {
       });
       let token = response.token as string;
       localStorage.setItem("jid", token);
-      console.log(response.user);
     });
   };
   return (
@@ -80,7 +81,10 @@ const SignUp: NextPage<Props> = () => {
         }
         <h1>Create an Acount</h1>
         <p>
-          Already have an acount ? <span>Login</span>
+          Already have an acount ?{" "}
+          <Link passHref href="/login">
+            <span>Login</span>
+          </Link>
         </p>
         <form onSubmit={handleSubmit(submitForm)}>
           <label>Username</label>

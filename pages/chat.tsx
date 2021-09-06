@@ -45,8 +45,10 @@ const Chat: NextPage<Props> = () => {
     reset,
     formState: { isDirty, isSubmitting, isValid },
   } = useForm<Message>({ mode: "onChange" });
+
   console.log(conectedUsers);
   console.log(reciever);
+
   // in case of not logedin user gets access to this page
   useEffect(() => {
     socket.on("connect_error", (err) => {
@@ -55,7 +57,8 @@ const Chat: NextPage<Props> = () => {
   }, [socket]);
 
   useEffect(() => {
-    socket.on("user connecting", (users) => {
+    socket.emit("connect to server", (users: ConectedUsers[]) => {
+      console.log(users);
       setConectedUsers(users);
     });
   }, [socket]);
@@ -73,6 +76,7 @@ const Chat: NextPage<Props> = () => {
   // get the active users for now
   useEffect(() => {
     socket.on("user connecting", (users) => {
+      console.log(users);
       setConectedUsers(users);
     });
   }, [socket, reciever]);

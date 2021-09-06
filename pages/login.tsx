@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import Head from "next/head";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useAppContext } from "../state";
 
@@ -21,11 +22,17 @@ interface response {
         id: string;
       }
     | undefined;
+  token: string | undefined;
 }
 
 const Login: NextPage<Props> = () => {
   const { user, setUser, socket } = useAppContext();
   const { register, handleSubmit, reset } = useForm<Form>();
+  const router = useRouter();
+  //checks if user exists
+  useEffect(() => {
+    if (user?.name) router.push("/chat");
+  }, [router, user?.name]);
 
   const submitForm = (data: Form) => {
     socket.emit("login", data, (response: response) => {
@@ -35,7 +42,8 @@ const Login: NextPage<Props> = () => {
         email: response.user!.email,
         id: response.user!.id,
       });
-      console.log(response.user);
+      let token = response.token as string;
+      localStorage.setItem("jid", token);
     });
   };
 
@@ -62,7 +70,7 @@ const Login: NextPage<Props> = () => {
           <label>
             Password <input type="password" {...register("password")} />
           </label>
-          <button onClick={(e) => e.preventDefault()}>LOGIN</button>
+          <button>LOGIN</button>
         </form>
       </div>
       <div className={styles.rightSection}>
