@@ -33,7 +33,7 @@ interface ConectedUsers {
 }
 
 const Chat: NextPage<Props> = () => {
-  const { user, socket } = useAppContext();
+  const { user, setUser, socket } = useAppContext();
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [conectedUsers, setConectedUsers] = useState<ConectedUsers[]>([]);
@@ -46,19 +46,16 @@ const Chat: NextPage<Props> = () => {
     formState: { isDirty, isSubmitting, isValid },
   } = useForm<Message>({ mode: "onChange" });
 
-  console.log(conectedUsers);
-  console.log(reciever);
-
   // in case of not logedin user gets access to this page
   useEffect(() => {
-    socket.on("connect_error", (err) => {
+    socket.on("connection_error", (err) => {
       console.log("connect error plz login", err);
     });
   }, [socket]);
 
   useEffect(() => {
-    socket.emit("connect to server", (users: ConectedUsers[]) => {
-      console.log(users);
+    socket.emit("connect to server", (users: ConectedUsers[], client: any) => {
+      setUser(client);
       setConectedUsers(users);
     });
   }, [socket]);
@@ -67,7 +64,8 @@ const Chat: NextPage<Props> = () => {
   useEffect(() => {
     socket.on("private message", (message) => {
       setMessages((prev) => {
-        prev.push(message!);
+        prev.push(message);
+        console.log(prev);
         return prev;
       });
     });
@@ -90,6 +88,7 @@ const Chat: NextPage<Props> = () => {
     setReciever(selectedUser.email);
     socket.emit("get previous messages", payload, (res: getMsgResponse) => {
       if (res.error) return console.log(res.error);
+      console.log(res.message);
       setMessages(() => {
         const prevMessages = res.message as Message[];
         return prevMessages;
@@ -103,12 +102,14 @@ const Chat: NextPage<Props> = () => {
       message: data.content,
     };
     socket.emit("private message", payload, (res: response) => {
-      if (res.error) return; //! implement the error for this
+      if (res.error) return console.error(res.error); //! implement the error for this
       const message = res.message;
+      console.log("107", message);
       setMessages((prev) => {
         prev.push(message!);
         return prev;
       });
+      console.log("112", messages);
     });
     reset();
   };
@@ -163,6 +164,7 @@ const Chat: NextPage<Props> = () => {
                     </div>
                   );
                 } else {
+                  console.log(message.sender, user!.id);
                   return (
                     <div key={index} className={styles.messageSender}>
                       {
@@ -181,7 +183,7 @@ const Chat: NextPage<Props> = () => {
                 type="text"
                 {...register("content")}
               />
-              <button>
+              <button disabled={!reciever}>
                 send <FiSend />
               </button>
             </form>
