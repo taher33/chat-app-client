@@ -63,12 +63,11 @@ const Chat: NextPage<Props> = () => {
   // ! check if this works properly
   useEffect(() => {
     socket.on("private message", (message) => {
-      setMessages((prev) => {
-        prev.push(message);
-        console.log(prev);
-        return prev;
-      });
+      console.log("recieved a private message");
+      let newMessages = [...messages, message];
+      setMessages(newMessages);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
 
   // get the active users for now
@@ -103,12 +102,8 @@ const Chat: NextPage<Props> = () => {
     };
     socket.emit("private message", payload, (res: response) => {
       if (res.error) return console.error(res.error); //! implement the error for this
-      const message = res.message;
-      console.log("107", message);
-      setMessages((prev) => {
-        prev.push(message!);
-        return prev;
-      });
+      let newMessages = [...messages, res.message as Message];
+      setMessages(newMessages);
       console.log("112", messages);
     });
     reset();
@@ -164,7 +159,6 @@ const Chat: NextPage<Props> = () => {
                     </div>
                   );
                 } else {
-                  console.log(message.sender, user!.id);
                   return (
                     <div key={index} className={styles.messageSender}>
                       {
