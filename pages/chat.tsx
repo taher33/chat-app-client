@@ -1,9 +1,9 @@
 import { NextPage } from "next";
-import { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
 import { useForm } from "react-hook-form";
 
 import { useAppContext } from "../state";
-import { NavBar } from "../components/NavBar";
+import { NavBarChat } from "../components/Navbar-chat";
 import Link from "next/link";
 
 import { FiSend } from "react-icons/fi";
@@ -30,15 +30,15 @@ interface ConectedUsers {
   name: string;
   id: string;
   email: string;
+  lastMessage: string;
 }
 
-const Chat: NextPage<Props> = () => {
+const Chat: FC<Props> = () => {
   const { user, setUser, socket } = useAppContext();
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [conectedUsers, setConectedUsers] = useState<ConectedUsers[]>([]);
   const [reciever, setReciever] = useState<string>();
-
   const {
     register,
     handleSubmit,
@@ -56,21 +56,34 @@ const Chat: NextPage<Props> = () => {
   useEffect(() => {
     socket.emit("connect to server", (users: ConectedUsers[], client: any) => {
       setUser(client);
+
+      users = users.filter((el) => el.id !== user?.id);
       setConectedUsers(users);
     });
-  }, [socket]);
+  }, [setUser, socket, user?.id]);
   // if I recieve a message
   // ! check if this works properly
   useEffect(() => {
-    socket.on("private message", (message) => {
-      console.log("recieved a private message");
-      let newMessages = [...messages, message];
-      setMessages(newMessages);
+    socket.on("private message", (message: Message) => {
+      if (reciever === message.sender) {
+        //if the selected reciever sends me a message we push it to the visible chat
+        let newMessages = [...messages];
+        newMessages.push(message);
+        setMessages(newMessages);
+      } else {
+        //else another user sent me a message
+        //so it should not apper in the chat but rather as a notification on the user =>(chats)
+        setConectedUsers((prev) => {
+          const [sender] = prev.filter((el) => el.id === message.sender);
+          const userArr = prev.filter((el) => el.id !== message.sender);
+          sender.lastMessage = message.content;
+          return [sender, ...userArr];
+        });
+      }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [socket]);
+  }, [messages, reciever, socket]);
 
-  // get the active users for now
+  // get the active users and set the client data in case of refreshing the page
   useEffect(() => {
     socket.on("user connecting", (users) => {
       console.log(users);
@@ -87,7 +100,6 @@ const Chat: NextPage<Props> = () => {
     setReciever(selectedUser.email);
     socket.emit("get previous messages", payload, (res: getMsgResponse) => {
       if (res.error) return console.log(res.error);
-      console.log(res.message);
       setMessages(() => {
         const prevMessages = res.message as Message[];
         return prevMessages;
@@ -111,6 +123,8 @@ const Chat: NextPage<Props> = () => {
 
   return (
     <>
+      <NavBarChat />
+
       <div className={styles.container}>
         <div className={styles.usersWrapper}>
           <h2>
@@ -136,7 +150,7 @@ const Chat: NextPage<Props> = () => {
                   }
                   <div className={styles.cardDetails}>
                     <h4>{element.name}</h4>
-                    <p>hey dude u good ...</p>
+                    <p>{element.lastMessage}</p>
                   </div>
                 </div>
               );
@@ -177,7 +191,10 @@ const Chat: NextPage<Props> = () => {
                 type="text"
                 {...register("content")}
               />
-              <button disabled={!reciever}>
+              <button
+                className={!reciever ? styles.disabledBtn : undefined}
+                disabled={!reciever}
+              >
                 send <FiSend />
               </button>
             </form>

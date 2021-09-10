@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import Head from "next/head";
 
 import { useAppContext } from "../state";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { IoPersonOutline } from "react-icons/io5";
@@ -18,7 +18,12 @@ interface form {
 }
 
 interface response {
-  error: string | undefined;
+  error:
+    | {
+        message: string;
+        errors: any;
+      }
+    | undefined;
   user:
     | {
         name: string;
@@ -32,7 +37,8 @@ interface response {
 
 const SignUp: NextPage<Props> = () => {
   const { user, setUser, socket } = useAppContext();
-  const { register, handleSubmit, reset } = useForm<form>();
+  const { register, handleSubmit } = useForm<form>();
+  const [errors, setErrors] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -41,11 +47,12 @@ const SignUp: NextPage<Props> = () => {
 
   const submitForm = (data: form) => {
     socket.emit("signup", data, (response: response) => {
-      if (response.error) return console.log(response.error);
+      if (response.error) return setErrors(response.error.message);
       setUser({
         name: response.user!.name,
         email: response.user!.email,
         id: response.user!.id,
+        imgUrl: undefined, // ! needs to be fixed when I implement images
       });
       let token = response.token as string;
       localStorage.setItem("jid", token);
@@ -81,11 +88,12 @@ const SignUp: NextPage<Props> = () => {
         }
         <h1>Create an Acount</h1>
         <p>
-          Already have an acount ?{" "}
+          Already have an acount ?
           <Link passHref href="/login">
             <span>Login</span>
           </Link>
         </p>
+        <span>{errors}</span>
         <form onSubmit={handleSubmit(submitForm)}>
           <label>Username</label>
           {/* <IoPersonOutline /> */}

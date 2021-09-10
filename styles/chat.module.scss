@@ -2,8 +2,15 @@
 
 $chat-wrapper-height: calc(100vh - 71px);
 
+.disabledBtn {
+  cursor: not-allowed;
+}
+
 .container {
-  margin-top: 4rem;
+  margin-top: 1rem;
+  max-width: 1080px;
+  margin-left: auto;
+  margin-right: auto;
   padding: 0 $padding-phone;
   display: grid;
   grid-template-rows: max-content 1fr;
@@ -58,6 +65,7 @@ $chat-wrapper-height: calc(100vh - 71px);
   }
 
   .chatWrapper {
+    height: --webkit;
     h2 {
       font-weight: 500;
       text-transform: capitalize;
@@ -69,13 +77,16 @@ $chat-wrapper-height: calc(100vh - 71px);
       position: relative;
       .messagesWrapper {
         flex: 1 1 auto;
-        // height: -webkit-fill-available;
+        height: max-content;
+        // min-height: 85vh;
         overflow-y: auto;
         padding-bottom: 1rem;
 
         .messageClient {
           max-width: 80%;
           width: fit-content;
+          line-break: anywhere;
+
           margin-left: auto;
           margin-bottom: 0.5rem;
           background-color: $primary-color;
@@ -97,7 +108,7 @@ $chat-wrapper-height: calc(100vh - 71px);
 
           p {
             max-width: 80%;
-
+            line-break: anywhere;
             width: fit-content;
             padding: 0.4rem 0.6rem 0.4rem 0.4rem;
             border-radius: 0 0.8rem 0.8rem 0.4rem;
@@ -141,6 +152,7 @@ $chat-wrapper-height: calc(100vh - 71px);
           color: white;
           background-color: #0035a7;
           margin-left: 1rem;
+          cursor: pointer;
           svg {
             font-size: 1.2rem;
             font-weight: 500;

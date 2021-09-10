@@ -1,0 +1,78 @@
+@import "variables.scss";
+
+.container {
+  margin: 0 auto;
+  max-width: 1080px;
+  padding: 1rem $padding-phone;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .logoWrapper {
+    margin-left: -13px;
+    height: 45px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .landingPageNav {
+    display: none;
+  }
+  svg {
+    font-size: 2.5rem;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    // padding: 1rem $padding-tablet;
+    .landingPageNav {
+      display: block;
+      img {
+        border-radius: 50%;
+        border: #2ca9ff 2px solid;
+        height: 40px;
+        width: 40px;
+      }
+    }
+    svg {
+      display: none;
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    // padding: 1rem $padding-laptop;
+
+    .landingPageNav {
+      display: block;
+
+      span {
+        margin-left: 3.5rem;
+        color: #494949;
+        font-weight: 500;
+        font-size: 14px;
+
+        &:hover {
+          cursor: pointer;
+          color: black;
+        }
+      }
+    }
+
+    svg {
+      display: none;
+    }
+  }
+}
+
+// @media (min-width: 1440px) {
+//   .container {
+//     padding: 1rem $padding-desktop;
+//     max-width: $max-container-width;
+//   }
+// }

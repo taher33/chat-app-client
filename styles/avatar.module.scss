@@ -1,0 +1,14 @@
+.wrapper {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  background-color: #ff6756;
+  text-align: center;
+  display: grid;
+  align-content: center;
+  cursor: pointer;
+  h3 {
+    text-transform: capitalize;
+    font-size: 22px;
+  }
+}

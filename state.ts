@@ -8,10 +8,14 @@ interface State {
         name: string;
         email: string;
         id: string;
+        imgUrl: string | undefined;
       }
     | undefined;
   setUser: Dispatch<
-    SetStateAction<{ name: string; email: string; id: string } | undefined>
+    SetStateAction<
+      | { name: string; email: string; id: string; imgUrl: string | undefined }
+      | undefined
+    >
   >;
   socket: Socket<DefaultEventsMap, DefaultEventsMap>;
 }
