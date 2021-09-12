@@ -11,10 +11,9 @@ function Avatar(props: Props): JSX.Element {
   if (props.text) {
     firstLetter = props.text.split("")[0];
   }
-  console.log(props);
   return (
     <div className={styles.wrapper}>
-      <h3>{firstLetter}</h3>{" "}
+      <h3>{firstLetter}</h3>
     </div>
   );
 }

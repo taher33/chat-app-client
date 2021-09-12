@@ -1,8 +1,10 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { FiArrowUpRight } from "react-icons/fi";
 import { NavBar } from "../components/NavBar";
+import { useAppContext } from "../state";
 
 import styles from "../styles/Home.module.scss";
 
@@ -12,7 +14,11 @@ interface form {
 }
 
 export default function Home() {
+  const { user } = useAppContext();
   const router = useRouter();
+  useEffect(() => {
+    if (user?.name) router.push("/chat");
+  }, [router, user?.name]);
 
   return (
     <>

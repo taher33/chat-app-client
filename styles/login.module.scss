@@ -49,7 +49,14 @@
       svg {
         position: absolute;
       }
-
+      p {
+        color: rgb(218, 54, 25);
+        font-size: 14px;
+        font-weight: normal;
+        word-wrap: break-word;
+        margin-top: 0.6rem;
+        margin-bottom: 1rem;
+      }
       input {
         width: 100%;
         display: block;

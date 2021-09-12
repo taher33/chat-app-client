@@ -6,9 +6,10 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { IoPersonOutline } from "react-icons/io5";
-import styles from "../styles/signup.module.scss";
 import { useRouter } from "next/router";
 import Link from "next/link";
+
+import styles from "../styles/signup.module.scss";
 
 interface Props {}
 interface form {
@@ -37,8 +38,12 @@ interface response {
 
 const SignUp: NextPage<Props> = () => {
   const { user, setUser, socket } = useAppContext();
-  const { register, handleSubmit } = useForm<form>();
-  const [errors, setErrors] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<form>();
+  const [apiErrors, setErrors] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -93,18 +98,40 @@ const SignUp: NextPage<Props> = () => {
             <span>Login</span>
           </Link>
         </p>
-        <span>{errors}</span>
+        <span>{apiErrors}</span>
         <form onSubmit={handleSubmit(submitForm)}>
           <label>Username</label>
           {/* <IoPersonOutline /> */}
-          <input type="text" {...register("userName")} />
-          <label>
-            E-mail
-            <input type="email" {...register("email")} />
-          </label>
-          <label>
-            Password <input type="password" {...register("password")} />
-          </label>
+          <input
+            type="text"
+            {...register("userName", { required: "must specify a user name" })}
+          />
+          {errors.userName && <p>{errors.userName.message} </p>}
+          <label>E-mail</label>
+          <input
+            type="email"
+            {...register("email", {
+              required: "must specify an email",
+              pattern: {
+                value: /^S+@S+.S+$/,
+                message: "this is not a valid email",
+              },
+            })}
+          />
+          {errors.email && <p>{errors.email.message}</p>}
+
+          <label>Password</label>
+          <input
+            type="password"
+            {...register("password", {
+              required: "must specify a password",
+              minLength: {
+                value: 8,
+                message: "password must be longer then 8 characters",
+              },
+            })}
+          />
+          {errors.password && <p>{errors.password.message}</p>}
           <button>SIGN UP</button>
         </form>
       </div>
