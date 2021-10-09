@@ -11,7 +11,9 @@ interface Props {}
 
 export const NavBarChat: FC = (props: Props) => {
   const { user, setUser, socket } = useAppContext();
+  console.log(user);
   const [dialog, setdialog] = useState(false);
+  if (!user) return null;
   return (
     <div className={styles.container}>
       <div className={styles.logoWrapper}>
